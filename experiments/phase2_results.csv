@@ -1,0 +1,5 @@
+Model,F1 (Macro),Parameters,Training Time (s),Complexity
+TF-IDF + Logistic Regression,0.9955,~53K,2.0,Low
+GloVe + Logistic Regression,0.9111516039083777,~560,5.233710765838623,Low
+GloVe + Neural Network,0.9426303181715997,"15,499",22.79164433479309,Medium
+LSTM (Bidirectional),0.9942359735607266,"1,133,611",1461.541887998581,High
