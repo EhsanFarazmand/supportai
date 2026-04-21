@@ -10,6 +10,8 @@
 | GloVe + Logistic Regression  | 0.911152  | ~560       | 5.233711          | Low        |
 | GloVe + Neural Network       | 0.942630  | 15,499     | 22.791644         | Medium     |
 | LSTM (Bidirectional)         | 0.994236  | 1,133,611  | 1461.541888       | High       |
+| BERT (base)                  | 0.999214  | 110M       | 400.859767  (GPU) | High       |
+| DistilBERT                   | 0.999873  | 67M        | 166.463498  (GPU) | High       |
 
 **PM Decision**: For this specific dataset, deploying anything beyond Logistic Regression would be **over-engineering**. The 0.2-0.3% improvement doesn't justify:
 - 40x slower inference
@@ -20,3 +22,4 @@
 - ✅ Logistic Regression: Clean, keyword-driven classification
 - ✅ Deep Learning: Ambiguous queries, context needed, semantic similarity
 - ✅ LLMs: Generative responses, few-shot learning, complex reasoning
+- ✅ BERT/Transformers: semantic understanding needed, context matters ("not good" vs "good"), small dataset (transfer learning helps), handling ambiguity, multi-lingual requirements

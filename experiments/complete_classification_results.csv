@@ -1,0 +1,7 @@
+Model,F1 (Macro),Parameters,Training Time (sec)
+TF-IDF + Logistic Regression,0.9955,53K,2
+GloVe + Logistic Regression,0.9111,~560,5
+GloVe + Neural Network,0.9426,~15.5K,22
+Bidirectional LSTM,0.9942,~1.13M,1461
+BERT (base),0.999214149,110M,400.8597672
+DistilBERT,0.999873336,67M,166.4634976
