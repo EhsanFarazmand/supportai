@@ -232,3 +232,6 @@ __pycache__/
 
 # VS Code
 .vscode/
+
+# Agent files
+CLAUDE.md
