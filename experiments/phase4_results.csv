@@ -1,0 +1,15 @@
+task,model,variant,metric,score
+generation,Phi-2 (2.7B),base (zero-shot),ROUGE-L,0.1966
+generation,Phi-2 (2.7B),QLoRA fine-tuned,ROUGE-L,0.3031
+generation,Mistral-7B-Instruct,base (zero-shot),ROUGE-L,0.2668
+generation,Mistral-7B-Instruct,QLoRA fine-tuned,ROUGE-L,0.3576
+classification,Mistral-7B-Instruct,zero-shot,macro-F1,0.6875
+classification,Mistral-7B-Instruct,few-shot,macro-F1,0.8002
+classification,DistilBERT,fine-tuned (Phase 3),macro-F1,0.9999
+classification,TF-IDF + LogReg,baseline (Phase 1),macro-F1,0.9955
+efficiency,Phi-2 (2.7B),QLoRA (4-bit),peak_VRAM_GB,3.89
+efficiency,Phi-2 (2.7B),QLoRA (4-bit),train_time_s,994.8
+efficiency,Phi-2 (2.7B),QLoRA (4-bit),ROUGE-L,0.3031
+efficiency,Phi-2 (2.7B),LoRA (fp16),peak_VRAM_GB,6.67
+efficiency,Phi-2 (2.7B),LoRA (fp16),train_time_s,785.9
+efficiency,Phi-2 (2.7B),LoRA (fp16),ROUGE-L,0.3149

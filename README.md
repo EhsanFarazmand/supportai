@@ -17,6 +17,8 @@ On the [Bitext Customer Support Dataset](https://huggingface.co/datasets/bitext/
 | BERT (base) | 0.9992 | 110M | 401 s (GPU) | High |
 | DistilBERT | 0.9999 | 67M | 166 s (GPU) | High |
 
+**Phase 4 (LLM fine-tuning)** confirms and extends this: an off-the-shelf Mistral-7B classifies at only **0.80 macro-F1 few-shot** (vs DistilBERT's 0.999), so the LLM stays off the classification path. Its real value is the *new* capability — **response generation**: QLoRA fine-tuning lifts ROUGE-L to 0.30 (Phi-2) / **0.36 (Mistral-7B)**, the first models that draft usable, on-brand replies. See [05_LLM_Finetuning_FINDINGS.md](notebooks/05_LLM_Finetuning_FINDINGS.md).
+
 See [EXPERIMENTS.md](EXPERIMENTS.md) for the full analysis and [METRICS.md](METRICS.md) for success criteria.
 
 ## Dataset
@@ -60,7 +62,7 @@ Each notebook has a matching `*_FINDINGS.md` documenting its results.
 | 1 — Classical ML baseline | ✅ Complete |
 | 2 — Deep learning / embeddings | ✅ Complete |
 | 3 — Transformer classification | ✅ Complete |
-| 4 — LLM fine-tuning (LoRA/QLoRA, response generation) | 🟡 Notebook built — pending Colab run |
+| 4 — LLM fine-tuning (LoRA/QLoRA, response generation) | ✅ Complete |
 | 5 — Advanced experiments (RAG, multi-task, active learning) | ⬜ Planned |
 | 6 — Product & demo (Gradio/Streamlit + PM docs) | ⬜ Planned |
 
