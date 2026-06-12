@@ -13,6 +13,7 @@ Phases 0–3 showed classification is *solved* (TF-IDF + LogReg = 0.995 macro-F1
 
 ## Setup
 - Runtime: Google Colab, T4 (16 GB).
+- Models: `microsoft/phi-2` (2.7B) and `mistralai/Mistral-7B-Instruct-v0.3` (7B; extended 32768 vocab, v3 tokenizer). Mistral is gated — accept terms + `huggingface_hub.login()`.
 - Subsample: `N_TRAIN_GEN=2000` generation examples, `N_EVAL=200` ROUGE pool, `N_CLS_EVAL≈330` classification tickets.
 - LoRA: r=16, α=32, dropout=0.05, target=all-linear. 1 epoch, lr=2e-4, max_seq_len=512.
 
