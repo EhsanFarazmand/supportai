@@ -57,3 +57,16 @@ Few-shot beats zero-shot by +0.11 F1, but even few-shot (0.80) trails fine-tuned
 QLoRA used **58% of the VRAM** for a negligible **−0.011 ROUGE-L** — but was **~27% slower** (4-bit dequant overhead). QLoRA's value is **memory, not speed**; memory is what's binding for the 7B (fp16 wouldn't fit a T4 with optimizer state).
 
 **PM Decision**: keep TF-IDF + Logistic Regression for **classification/routing** — Phase 4 confirms nothing beats it on cost-adjusted accuracy. Introduce a **QLoRA-fine-tuned 7B only for reply drafting**, as a human-in-the-loop agent assist, pending the Phase 5 human-eval rubric. QLoRA (not fp16 LoRA) is what makes the 7B trainable on a 16 GB T4.
+
+## Phase 5: Advanced Experiments — RAG / active learning / CoT / multi-task
+
+_Built and run in `06_advanced_experiments.ipynb` (Colab T4). Full analysis: `notebooks/06_Advanced_Experiments_FINDINGS.md`._
+
+Four directions that make the system smarter and cheaper to operate (all four roadmap options implemented).
+
+- **A · RAG** (`all-MiniLM-L6-v2` + FAISS, top-k=3, FT-Mistral grounded) — retrieval was perfect (category-match@3 = **1.00**) but grounding *lowered* ROUGE: FT-only **0.372 → FT+RAG 0.354**; retrieve-and-return floor **0.361**. On this near-duplicate-heavy dataset the FT model already knows the style, so context adds noise. **RAG's value = grounding/auditability, not ROUGE** — would pay off on more diverse real traffic.
+- **B · Active learning** — entropy vs random on the Phase-1 LogReg. Labels to reach 0.95 macro-F1: uncertainty **1000** vs random **1200** → **16.7% fewer**. Concrete labeling-cost saving.
+- **C · Prompt engineering (CoT)** — 80 hardest tickets: zero-shot **0.825**, few-shot **0.788** (*hurt* — biased demos), CoT **0.850** (best). Prompting narrows the hard-case gap to BERT (0.999) without closing it.
+- **D · Multi-task** — shared DistilBERT encoder + `category`+`intent` heads vs single-task: category **0.9993** vs 0.9986, intent **0.9966** vs 0.9967. **Parity at ~half the serving cost.** (Shared encoder = classification-only; joint generation needs an encoder-decoder.)
+
+**PM Decision**: ship a multi-task encoder for category+intent routing and QLoRA-Mistral for reply drafting; keep RAG for grounding/auditability (not ROUGE); use active learning to cut labeling ~17% and CoT as a low-confidence fallback. Phase 6 = Gradio demo + human-eval rubric.

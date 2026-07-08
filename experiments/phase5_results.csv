@@ -1,0 +1,15 @@
+experiment,metric,value
+RAG,category_match@k (retrieval),1.0
+RAG,ROUGE-L retrieve-and-return (NN),0.3614
+RAG,ROUGE-L fine-tuned only (Phase 4),0.3724
+RAG,ROUGE-L fine-tuned + RAG,0.3536
+ActiveLearning,labels to reach 0.95 F1 (uncertainty),1000.0
+ActiveLearning,labels to reach 0.95 F1 (random),1200.0
+ActiveLearning,labeling-cost reduction (%),16.7
+PromptCoT,hard-subset accuracy zero-shot,0.825
+PromptCoT,hard-subset accuracy few-shot,0.7875
+PromptCoT,hard-subset accuracy chain-of-thought,0.85
+MultiTask,category macro-F1 (multi-task),0.9993
+MultiTask,intent macro-F1 (multi-task),0.9966
+MultiTask,category macro-F1 (single-task),0.9986
+MultiTask,intent macro-F1 (single-task),0.9967

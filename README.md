@@ -51,6 +51,7 @@ The notebooks form a dependency chain — each consumes artifacts produced by th
 | [`03_embeddings_and_neural_nets.ipynb`](notebooks/03_embeddings_and_neural_nets.ipynb) | 2 — Deep learning | GloVe embeddings, a feed-forward net, and a BiLSTM; t-SNE visualization |
 | [`04_transformers.ipynb`](notebooks/04_transformers.ipynb) | 3 — Transformers | Fine-tunes BERT and DistilBERT via the HuggingFace Trainer API |
 | [`05_llm_finetuning.ipynb`](notebooks/05_llm_finetuning.ipynb) | 4 — LLM fine-tuning | QLoRA fine-tunes Phi-2 + Mistral-7B for **response generation**; LLM-vs-BERT classification; LoRA-vs-QLoRA efficiency. **Runs on Colab (T4)** |
+| [`06_advanced_experiments.ipynb`](notebooks/06_advanced_experiments.ipynb) | 5 — Advanced | **RAG** over historical responses, **active learning**, **chain-of-thought** prompting, and **multi-task** (category+intent) learning. **Runs on Colab (T4)** |
 
 Each notebook has a matching `*_FINDINGS.md` documenting its results.
 
@@ -63,7 +64,7 @@ Each notebook has a matching `*_FINDINGS.md` documenting its results.
 | 2 — Deep learning / embeddings | ✅ Complete |
 | 3 — Transformer classification | ✅ Complete |
 | 4 — LLM fine-tuning (LoRA/QLoRA, response generation) | ✅ Complete |
-| 5 — Advanced experiments (RAG, multi-task, active learning) | ⬜ Planned |
+| 5 — Advanced experiments (RAG, active learning, CoT, multi-task) | ✅ Complete |
 | 6 — Product & demo (Gradio/Streamlit + PM docs) | ⬜ Planned |
 
 ## Getting started
