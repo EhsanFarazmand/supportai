@@ -22,7 +22,7 @@
 - **Automated Metrics**:
   - ROUGE-L: Overlap with reference responses — **achieved 0.358** (Mistral-7B QLoRA fine-tuned, Phase 4). RAG did **not** improve it (0.354, Phase 5): the dataset is too near-duplicate for retrieval to add signal, so **ROUGE proved a weak proxy on this data**.
   - BLEU / Perplexity: not computed (ROUGE-L used as the single automated proxy).
-- **Human Evaluation** (sample 100 responses): ⬜ **pending Phase 6** — the metric that will actually arbitrate generation quality, since ROUGE clearly under-measures it here.
+- **Human Evaluation** (sample 100 responses): ⬜ **still open** — *not* run in Phase 6 (which shipped the live demo, not the study). This remains the metric that will actually arbitrate generation quality, since ROUGE clearly under-measures it here.
   - Relevance: Does it address the query? (1-5 scale)
   - Accuracy: Is information correct? (1-5 scale)
   - Tone: Appropriate customer service tone? (1-5 scale)
@@ -52,10 +52,14 @@ Filled from Phases 1–5 (detailed train-time / param counts in `EXPERIMENTS.md`
 | **Mistral-7B QLoRA fine-tuned** | 4 | **0.358** | 6.4 GB (4-bit) | on-brand replies |
 | Fine-tuned + RAG (top-3) | 5 | 0.354 | 6.4 GB + FAISS | RAG didn't help ROUGE on this data |
 | Retrieve-and-return (no LLM) | 5 | 0.361 | FAISS only | zero-cost floor |
-| Human eval (relevance/accuracy/tone/completeness) | 6 | ⬜ pending | — | the metric that actually decides |
+| Human eval (relevance/accuracy/tone/completeness) | future | ⬜ open | — | not run in Phase 6; the metric that actually decides |
 
 ## Deployment Constraints
-_(targets; latency/cost not yet formally benchmarked — Phase 6)_
-- **Latency**: <500ms per ticket (95th pct) — ✅ classifiers (LogReg sub-ms; DistilBERT ~ms on GPU) meet this easily. ⚠️ The 7B reply-drafting LLM is far slower and is scoped as an **async, human-in-the-loop assist**, not inline routing.
-- **Memory**: <8GB GPU for inference — ✅ Mistral-7B in 4-bit QLoRA peaked **~6.4 GB**; all classifiers are CPU-friendly.
-- **Cost**: <$0.01 per ticket — ✅ classical routing is effectively free; ⚠️ LLM drafting cost is tracked separately and justified only as an agent assist.
+_Targets below. The Phase-6 demo is **deployed** ([Space, ZeroGPU](https://huggingface.co/spaces/EFarazmand/supportai-demo)), but per-ticket latency/cost were **not formally load-tested** — the figures are qualitative / from the live Space, not a benchmark._
+- **Latency**: <500ms per ticket (95th pct) — ✅ classifiers (LogReg sub-ms; DistilBERT ~ms on GPU) meet this easily. ⚠️ The 7B reply-drafting LLM is far slower — on the live ZeroGPU Space a draft is **a few seconds warm**, plus a cold-start that streams the ~4 GB packed model — so it's scoped as an **async, human-in-the-loop assist**, not inline routing.
+- **Memory**: <8GB GPU for inference — ✅ Mistral-7B in 4-bit QLoRA peaked **~6.4 GB** (training); the deployed 4-bit base packs to ~4.1 GB. All classifiers are CPU-friendly.
+- **Cost**: <$0.01 per ticket — ✅ classical routing is effectively free; ⚠️ LLM drafting runs on ZeroGPU (free for the demo, visitor-quota-limited) and in production would be billed GPU time, justified only as an agent assist.
+
+### Open (future work)
+- Formal latency/throughput load test and a real per-ticket cost model.
+- The 100-response human-eval rubric above — the deciding metric for generation quality.

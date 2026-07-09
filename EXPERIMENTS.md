@@ -70,3 +70,7 @@ Four directions that make the system smarter and cheaper to operate (all four ro
 - **D · Multi-task** — shared DistilBERT encoder + `category`+`intent` heads vs single-task: category **0.9993** vs 0.9986, intent **0.9966** vs 0.9967. **Parity at ~half the serving cost.** (Shared encoder = classification-only; joint generation needs an encoder-decoder.)
 
 **PM Decision**: ship a multi-task encoder for category+intent routing and QLoRA-Mistral for reply drafting; keep RAG for grounding/auditability (not ROUGE); use active learning to cut labeling ~17% and CoT as a low-confidence fallback. Phase 6 = Gradio demo + human-eval rubric.
+
+## Phase 6: Product & Demo
+
+Not an experiment — packages Phases 0–5 into a product. `app/` is a **Gradio** demo (ticket → category+confidence + suggested reply; CPU retrieval by default, fine-tuned Mistral-7B via ZeroGPU on demand), **deployed & live on HuggingFace Spaces (ZeroGPU)**: https://huggingface.co/spaces/EFarazmand/supportai-demo — LLM draft with the fine-tuned adapter confirmed working. Decision docs in `docs/`: `PRODUCT_BRIEF.md`, `TECHNICAL_DECISIONS.md` (TD-1..8, each tied to the numbers above), `DEPLOYMENT.md` (cost/latency/accuracy trade-offs). **Still open**: the 100-response human-eval rubric (`METRICS.md`) — the metric that will actually arbitrate generation quality, since ROUGE under-measures it on this data.

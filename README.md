@@ -36,9 +36,16 @@ supportai/
 ├── notebooks/     # one numbered notebook per phase, each with a *_FINDINGS.md
 ├── models/        # saved encoders, vectorizers, and fine-tuned models (weights gitignored)
 ├── experiments/   # results CSVs and comparison plots
-├── src/           # reusable code        (planned)
-└── app/           # demo interface       (planned)
+├── app/           # Gradio demo (Phase 6) — deploys to HuggingFace Spaces
+├── docs/          # PM docs: product brief, technical decisions, deployment
+└── src/           # reusable code        (planned)
 ```
+
+## Demo (Phase 6)
+
+**🔴 Live demo → https://huggingface.co/spaces/EFarazmand/supportai-demo** (Gradio on HuggingFace Spaces, ZeroGPU)
+
+A Gradio app in [app/](app/) classifies a ticket (category + confidence) and drafts a reply — **classification + retrieval run instantly on CPU; the fine-tuned Mistral-7B (QLoRA) drafts a RAG-grounded reply on demand via ZeroGPU**. Run locally with `python app/app.py` (retrieval reply on CPU), or see [app/README.md](app/README.md) for the Spaces setup. PM docs live in [docs/](docs/): [product brief](docs/PRODUCT_BRIEF.md), [technical decisions](docs/TECHNICAL_DECISIONS.md), [deployment](docs/DEPLOYMENT.md).
 
 ## Notebooks (run in order)
 
@@ -65,7 +72,7 @@ Each notebook has a matching `*_FINDINGS.md` documenting its results.
 | 3 — Transformer classification | ✅ Complete |
 | 4 — LLM fine-tuning (LoRA/QLoRA, response generation) | ✅ Complete |
 | 5 — Advanced experiments (RAG, active learning, CoT, multi-task) | ✅ Complete |
-| 6 — Product & demo (Gradio/Streamlit + PM docs) | ⬜ Planned |
+| 6 — Product & demo (Gradio app + PM docs) | ✅ Complete |
 
 ## Getting started
 

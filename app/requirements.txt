@@ -1,0 +1,18 @@
+# SupportAI demo — Hugging Face Spaces (Gradio + ZeroGPU)
+# NOTE: do NOT list gradio, spaces, huggingface_hub, or torch here —
+# the ZeroGPU runtime preinstalls them (pinning breaks the runtime).
+# gradio version is controlled by `sdk_version` in README.md.
+
+scikit-learn>=1.4
+pandas>=2.0
+numpy>=1.24
+scipy>=1.10
+datasets>=2.19
+joblib>=1.3
+
+# LLM reply path (runs on ZeroGPU)
+transformers>=4.44
+peft>=0.11
+accelerate>=0.30
+bitsandbytes>=0.44
+sentencepiece
