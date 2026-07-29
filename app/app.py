@@ -27,12 +27,24 @@ ADAPTER_DIR = os.environ.get("MISTRAL_ADAPTER", "models/mistral_qlora_gen")
 # ---------------------------------------------------------------------------
 # 1. Historical ticket corpus (also the retrieval knowledge base)
 # ---------------------------------------------------------------------------
-def load_corpus():
-    from datasets import load_dataset
-    ds = load_dataset(DATASET_ID, split="train")
-    df = pd.DataFrame(ds)
+def _shape(df):
     keep = [c for c in ["instruction", "response", "category", "intent"] if c in df.columns]
     return df[keep].dropna(subset=["instruction", "response"]).reset_index(drop=True)
+
+def load_corpus():
+    """Prefer a BUNDLED local CSV — zero runtime Hub/token dependency, so the app
+    boots even if the dataset is removed/gated or the HF_TOKEN is invalid. Only if
+    the file is absent do we fall back to the public dataset (anonymously — a bad
+    HF_TOKEN would otherwise 401 a public read as 'cannot be accessed')."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    for p in ["customer_support_clean.csv", "data/customer_support_clean.csv",
+              os.path.join(here, "data", "customer_support_clean.csv")]:
+        if os.path.exists(p):
+            print(f"Corpus from bundled file: {p}")
+            return _shape(pd.read_csv(p))
+    print("No bundled corpus; loading public dataset anonymously...")
+    from datasets import load_dataset
+    return _shape(pd.DataFrame(load_dataset(DATASET_ID, split="train", token=False)))
 
 print("Loading corpus...")
 CORPUS = load_corpus()
@@ -204,7 +216,10 @@ with gr.Blocks(title="SupportAI Demo", theme=gr.themes.Soft()) as demo:
 
     analyze_btn.click(analyze, [ticket], [cats_out, reply_out, neigh_out])
     ticket.submit(analyze, [ticket], [cats_out, reply_out, neigh_out])
-    llm_btn.click(llm_reply, [ticket], [reply_out])
+    # LLM button: classify + retrieve first (so the category & neighbours reflect
+    # THIS ticket), then overwrite the reply with the grounded LLM draft.
+    llm_btn.click(analyze, [ticket], [cats_out, reply_out, neigh_out]).then(
+        llm_reply, [ticket], [reply_out])
 
 if __name__ == "__main__":
     demo.launch()
